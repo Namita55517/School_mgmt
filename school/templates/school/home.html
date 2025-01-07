@@ -9,9 +9,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
+            background-color: #f9f9f9;
+            margin: 20px;
         }
 
         h1 {
@@ -45,11 +44,48 @@
             padding: 10px 15px;
             cursor: pointer;
             border-radius: 5px;
-            margin-bottom: 15px;
+            margin: 10px 0;
         }
 
         button:hover {
             background-color: #0056b3;
+        }
+
+        #add-student-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #add-student-form input {
+            margin: 5px 0;
+            padding: 8px;
+            width: 300px;
+            display: block;
+        }
+
+        #add-student-form button {
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .action-btn:hover {
+            background-color: #c82333;
+        }
+
+        .edit-btn {
+            background-color: #28a745;
+        }
+
+        .edit-btn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -57,7 +93,28 @@
     <h1>Welcome to the School Management System</h1>
 
     <!-- Add Student Button -->
-    <button id="add-student-btn">Add Student</button>
+    <button id="show-form-btn">Add New Student</button>
+
+    <!-- Add Student Form -->
+    <form id="add-student-form">
+        <h2>Add Student</h2>
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" placeholder="Enter First Name" required>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" placeholder="Enter Last Name" required>
+
+        <label for="roll_no">Roll Number:</label>
+        <input type="number" id="roll_no" placeholder="Enter Roll Number" required>
+
+        <label for="class_name">Class Name:</label>
+        <input type="text" id="class_name" placeholder="Enter Class Name" required>
+
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" required>
+
+        <button type="button" id="add-student-btn">Submit</button>
+    </form>
 
     <!-- Students Table -->
     <h2>Students</h2>
@@ -69,6 +126,7 @@
                 <th>Roll Number</th>
                 <th>Class Name</th>
                 <th>Date of Birth</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -78,20 +136,30 @@
                 <td>101</td>
                 <td>10A</td>
                 <td>2008-05-15</td>
+                <td>
+                    <button class="edit-btn">Edit</button>
+                    <button class="action-btn delete-btn">Delete</button>
+                </td>
             </tr>
         </tbody>
     </table>
 
     <!-- Internal JavaScript -->
     <script>
-        // Handle Add Student Button Click
+        // Show the form when "Add New Student" button is clicked
+        document.getElementById('show-form-btn').addEventListener('click', function () {
+            const form = document.getElementById('add-student-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Add a new student to the table
         document.getElementById('add-student-btn').addEventListener('click', function () {
-            // Prompt for new student details
-            const firstName = prompt("Enter First Name:");
-            const lastName = prompt("Enter Last Name:");
-            const rollNo = prompt("Enter Roll Number:");
-            const className = prompt("Enter Class Name:");
-            const dob = prompt("Enter Date of Birth (YYYY-MM-DD):");
+            // Get form input values
+            const firstName = document.getElementById('first_name').value;
+            const lastName = document.getElementById('last_name').value;
+            const rollNo = document.getElementById('roll_no').value;
+            const className = document.getElementById('class_name').value;
+            const dob = document.getElementById('date_of_birth').value;
 
             // Validate inputs
             if (firstName && lastName && rollNo && className && dob) {
@@ -105,10 +173,30 @@
                     <td>${rollNo}</td>
                     <td>${className}</td>
                     <td>${dob}</td>
+                    <td>
+                        <button class="edit-btn">Edit</button>
+                        <button class="action-btn delete-btn">Delete</button>
+                    </td>
                 `;
+
+                // Clear the form
+                document.getElementById('add-student-form').reset();
                 alert("Student added successfully!");
+
+                // Hide the form
+                document.getElementById('add-student-form').style.display = 'none';
             } else {
-                alert("All fields are required!");
+                alert("Please fill in all fields!");
+            }
+        });
+
+        // Handle delete button click
+        document.getElementById('students-table').addEventListener('click', function (event) {
+            if (event.target && event.target.classList.contains('delete-btn')) {
+                // Delete the row containing the clicked delete button
+                const row = event.target.closest('tr');
+                row.remove();
+                alert("Student deleted successfully!");
             }
         });
     </script>
