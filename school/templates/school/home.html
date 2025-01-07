@@ -8,6 +8,11 @@
 <body>
     <h1>Welcome to the School Management System</h1>
 
+    <!-- Add Student Button -->
+    <a href="{% url 'add_student' %}">
+        <button type="button">Add Student</button>
+    </a>
+
     <!-- Display Students -->
     <h2>Students</h2>
     <table border="1">
@@ -28,6 +33,10 @@
                 <td>{{ student.roll_no }}</td>
                 <td>{{ student.class_namae }}</td>
                 <td>{{ student.date_of_birth }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No students found.</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -51,6 +60,10 @@
                 <td>{{ teacher.subject }}</td>
                 <td>{{ teacher.email }}</td>
                 <td>{{ teacher.phone }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No teachers found.</td>
             </tr>
             {% endfor %}
         </tbody>
