@@ -51,20 +51,49 @@
             background-color: #0056b3;
         }
 
-        #add-student-form {
-            display: none;
-            margin-top: 20px;
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
 
         #add-student-form input {
             margin: 5px 0;
             padding: 8px;
-            width: 300px;
+            width: 100%;
             display: block;
-        }
-
-        #add-student-form button {
-            margin-top: 10px;
         }
 
         .action-btn {
@@ -95,26 +124,31 @@
     <!-- Add Student Button -->
     <button id="show-form-btn">Add New Student</button>
 
-    <!-- Add Student Form -->
-    <form id="add-student-form">
-        <h2>Add Student</h2>
-        <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" placeholder="Enter First Name" required>
+    <!-- Modal for Add Student Form -->
+    <div id="addStudentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Student</h2>
+            <form id="add-student-form">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" placeholder="Enter First Name" required>
 
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" placeholder="Enter Last Name" required>
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" placeholder="Enter Last Name" required>
 
-        <label for="roll_no">Roll Number:</label>
-        <input type="number" id="roll_no" placeholder="Enter Roll Number" required>
+                <label for="roll_no">Roll Number:</label>
+                <input type="number" id="roll_no" placeholder="Enter Roll Number" required>
 
-        <label for="class_name">Class Name:</label>
-        <input type="text" id="class_name" placeholder="Enter Class Name" required>
+                <label for="class_name">Class Name:</label>
+                <input type="text" id="class_name" placeholder="Enter Class Name" required>
 
-        <label for="date_of_birth">Date of Birth:</label>
-        <input type="date" id="date_of_birth" required>
+                <label for="date_of_birth">Date of Birth:</label>
+                <input type="date" id="date_of_birth" required>
 
-        <button type="button" id="add-student-btn">Submit</button>
-    </form>
+                <button type="button" id="add-student-btn">Submit</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Students Table -->
     <h2>Students</h2>
@@ -146,10 +180,26 @@
 
     <!-- Internal JavaScript -->
     <script>
-        // Show the form when "Add New Student" button is clicked
-        document.getElementById('show-form-btn').addEventListener('click', function () {
-            const form = document.getElementById('add-student-form');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        // Get modal and buttons
+        const modal = document.getElementById("addStudentModal");
+        const showFormBtn = document.getElementById("show-form-btn");
+        const closeBtn = document.getElementsByClassName("close")[0];
+
+        // Show the modal when "Add New Student" button is clicked
+        showFormBtn.addEventListener('click', function () {
+            modal.style.display = "block";
+        });
+
+        // Close the modal when the user clicks the close button
+        closeBtn.addEventListener('click', function () {
+            modal.style.display = "none";
+        });
+
+        // Close the modal if the user clicks outside of the modal
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
         });
 
         // Add a new student to the table
@@ -183,8 +233,8 @@
                 document.getElementById('add-student-form').reset();
                 alert("Student added successfully!");
 
-                // Hide the form
-                document.getElementById('add-student-form').style.display = 'none';
+                // Close the modal
+                modal.style.display = "none";
             } else {
                 alert("Please fill in all fields!");
             }
